@@ -166,6 +166,7 @@
 			$('#moneyFind').show();
 			$('#money').hide();
 			$('#chart').hide();
+			stat = "0";
 		});
 
 	});
@@ -273,37 +274,7 @@
 	</div>
 	<!-- /.intro-header -->
 
-	<!-- Page Content -->
 
-	<a name="services"></a>
-	<div class="content-section-a" hidden id="money">
-
-		<div class="container">
-			<div class="row">
-				<div style="text-align: right; margin-top: 2cm;">
-					<ul class="list-inline intro-social-buttons">
-						<li><a onClick="browserChart()"
-							class="btn btn-default btn-lg"><span class="network-name"><b>柱狀圖模式</b></span></a></li>
-
-
-					</ul>
-				</div>
-
-				<h3>
-					<div id='name'></div>
-				</h3>
-				<div id='calendar'></div>
-				<hr class="intro-divider">
-				<h3>
-					<div id='name1'></div>
-				</h3>
-				<div id='calendar1'></div>
-			</div>
-
-		</div>
-		<!-- /.container -->
-
-	</div>
 	<!-- /.content-section-a -->
 	<a name="chart"></a>
 	<div class="content-section-a" hidden id="chart">
@@ -366,6 +337,38 @@
 				</div>
 				<div id="container1"
 					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+
+		<!-- Page Content -->
+
+	<a name="services"></a>
+	<div class="content-section-a" hidden id="money">
+
+		<div class="container">
+			<div class="row">
+				<div style="text-align: right; margin-top: 2cm;">
+					<ul class="list-inline intro-social-buttons">
+						<li><a onClick="browserChart()"
+							class="btn btn-default btn-lg"><span class="network-name"><b>柱狀圖模式</b></span></a></li>
+
+
+					</ul>
+				</div>
+
+				<h3>
+					<div id='name'></div>
+				</h3>
+				<div id='calendar'></div>
+				<hr class="intro-divider">
+				<h3>
+					<div id='name1'></div>
+				</h3>
+				<div id='calendar1'></div>
 			</div>
 
 		</div>

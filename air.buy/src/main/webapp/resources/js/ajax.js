@@ -31,7 +31,7 @@ function search(outboundDate, returnDate, from, to, structure, name1, name2) {
 
 	createCal(from, to);
 	ajax(outboundD, returnD, from, to, structure, name1, name2,0);
-	stat = "1";
+	
 
 }
 
@@ -285,34 +285,35 @@ function ajax(outboundDate, returnDate, from, to, structure, name1, name2,view) 
 				}
 			});
 
-			
+			$('#calendar').fullCalendar('removeEvents');
+			$('#calendar').fullCalendar('addEventSource', month1);
+			if (structure == "RoundTrip") {
+				$('#calendar1').fullCalendar('removeEvents');
+				$('#calendar1').fullCalendar('addEventSource', month2);
+				if ( new Date($.datepicker.formatDate('yy/mm',new Date(returnDate))).getTime() <=  new Date($.datepicker.formatDate('yy/mm',new Date(outboundDate))).getTime()){
+					$('#calendar1 .fc-prev-button').prop('disabled', true);
+					$('#calendar1 .fc-prev-button').css('opacity', 0.5);
+					$('#calendar .fc-next-button').attr('disabled', true);
+					$('#calendar .fc-next-button').css('opacity', 0.5);
+					
+				}else{
+					$('#calendar1 .fc-prev-button').attr('disabled', false);
+					$('#calendar1 .fc-prev-button').css('opacity', 1);
+					$('#calendar .fc-next-button').attr('disabled', false);
+					$('#calendar .fc-next-button').css('opacity', 1);
+				}
+			}
 			
 			if(view == 0){
 				browserCal();
-				$('#calendar').fullCalendar('removeEvents');
-				$('#calendar').fullCalendar('addEventSource', month1);
-				if (structure == "RoundTrip") {
-					$('#calendar1').fullCalendar('removeEvents');
-					$('#calendar1').fullCalendar('addEventSource', month2);
-					if ( new Date($.datepicker.formatDate('yy/mm',new Date(returnDate))).getTime() <=  new Date($.datepicker.formatDate('yy/mm',new Date(outboundDate))).getTime()){
-						$('#calendar1 .fc-prev-button').prop('disabled', true);
-						$('#calendar1 .fc-prev-button').css('opacity', 0.5);
-						$('#calendar .fc-next-button').attr('disabled', true);
-						$('#calendar .fc-next-button').css('opacity', 0.5);
-						
-					}else{
-						$('#calendar1 .fc-prev-button').attr('disabled', false);
-						$('#calendar1 .fc-prev-button').css('opacity', 1);
-						$('#calendar .fc-next-button').attr('disabled', false);
-						$('#calendar .fc-next-button').css('opacity', 1);
-					}
-				}
+				
 				
 			}else {
 				browserChart();
 			}
 			$('#moneyFind').hide();
 			window.location.href = '#services';
+			stat = "1";
 			return true;
 		},
 		error : function(e) {
@@ -521,7 +522,7 @@ function browserCal(){
 }
 
 function beforeMonth(status){
-	
+	stat = "0";
 	if(status == 0){ //去程
 		//var current = $.datepicker.formatDate('yy/mm/dd',new Date($('#calendar').fullCalendar('getView').intervalStart.format()));
 		  var myDate = new Date(outboundD);
@@ -591,7 +592,7 @@ function checkDate(outboundD,returnD){
 //下個月
 function nextMonth(status){
 	
-
+	stat = "0";
 	if (status == 0) { // 去程
 
 		var myDate = new Date(outboundD);
