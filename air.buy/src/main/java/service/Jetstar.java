@@ -22,8 +22,8 @@ public class Jetstar {
 	private static String url = "https://booknow.jetstar.com/LowFareFinder.aspx?culture=zh-HK";
 
 	public static void main(String[] args) throws Exception {
-		String outboundDate = "2017-01";
-		String returnDate = "2017-02";
+		String outboundDate = "2016-12";
+		String returnDate = "2017-01";
 		String from = "TPE";
 		String to = "NRT";
 
@@ -96,8 +96,8 @@ public class Jetstar {
 								}
 							outboundMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	cueenrcy +" "+ e.attr("data-price").replace(".00", ""));
 							System.out.println((new StringBuilder(
-									"去程"))
-									.append(e.attr("data-origin")).append(":")
+									"Jetstar 去程："))
+									
 									.append(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))).append(":")
 									.append(cueenrcy +e.select("li").attr("data-price").replace(".00", ""))
 									.toString());
@@ -111,8 +111,8 @@ public class Jetstar {
 							}
 							returnMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),cueenrcy +" "+e.attr("data-price").replace(".00", ""));
 							System.out.println((new StringBuilder(
-									"回程"))
-									.append(e.attr("data-origin")).append(":")
+									"Jetstar 回程："))
+						
 									.append(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))).append(":")
 									.append(cueenrcy +e.select("li").attr("data-price").replace(".00", ""))
 									.toString());
@@ -133,7 +133,7 @@ public class Jetstar {
 
 			}
 		
-			i += 10;
+			i += 5;
 
 		}
 		moneyList.add(outboundMap);

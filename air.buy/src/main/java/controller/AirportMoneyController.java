@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import service.Airasia;
 import service.Jetstar;
 import service.Peach;
 import service.Scoot;
@@ -106,7 +107,7 @@ public class AirportMoneyController extends Thread{
 				}
 			});
 			 
-			thread1.start();
+		//	thread1.start();
 			 
 			Thread thread2 = new Thread(new Runnable() {
 				public void run() {
@@ -125,29 +126,39 @@ public class AirportMoneyController extends Thread{
 					moneyjetstarVo.setMoneyList(jetstarMoneyList);
 					moneyVoList.add(moneyjetstarVo);
 
-					/*
-					 * Vanilla vanilla = new Vanilla(); String st = structure;
-					 * if("RoundTrip".equals(st)) { st = "RT"; } else { st =
-					 * "OW"; } List<HashMap<String, String>> vanillaMoneyList =
-					 * vanilla.getMoney(outboundDate, returnDate, from, to, st);
-					 * MoneyVo moneyvanillarVo = new MoneyVo();
-					 * moneyvanillarVo.setAirportName("Vanilla");
-					 * moneyvanillarVo.setMoneyList(vanillaMoneyList);
-					 * moneyVoList.add(moneyvanillarVo);
-					 */
-
-					Scoot scoot = new Scoot();
+					
+					Vanilla vanilla = new Vanilla();
 					String st = structure;
 					if ("RoundTrip".equals(st)) {
-						st = "Return";
+						st = "RT";
 					} else {
-						st = "Oneway";
+						st = "OW";
+					}
+					List<HashMap<String, String>> vanillaMoneyList = null;
+					try {
+						vanillaMoneyList = vanilla
+								.getMoney(outbound, returnD, from, to, st);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					MoneyVo moneyvanillarVo = new MoneyVo();
+					moneyvanillarVo.setAirportName("Vanilla");
+					moneyvanillarVo.setMoneyList(vanillaMoneyList);
+					moneyVoList.add(moneyvanillarVo);
+
+					Scoot scoot = new Scoot();
+					String scootst = structure;
+					if ("RoundTrip".equals(scootst)) {
+						scootst = "Return";
+					} else {
+						scootst = "Oneway";
 					}
 					List<HashMap<String, String>> scootMoneyList = null;
 					try {
 						scootMoneyList = scoot.getMoney(
 								outbound.substring(0, 7),
-								returnD.substring(0, 7), from, to, st);
+								returnD.substring(0, 7), from, to, scootst);
 					} catch (IOException | ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -178,12 +189,35 @@ public class AirportMoneyController extends Thread{
 					moneyVoList.add(moneypeachVo);
 				}
 			});
-			
+		Thread thread4 = new Thread(new Runnable() {
+			public void run() {
+		Airasia airasia = new Airasia();
+		List<HashMap<String, String>> airasiaMoneyList = null;
+	
+		try {
+			airasiaMoneyList = airasia.getMoney(outbound.substring(0, 7), returnD.substring(0, 7),
+						from, to, structure);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MoneyVo moneyairasiaVo = new MoneyVo();
+		moneyairasiaVo.setAirportName("Airasia");
+		moneyairasiaVo.setMoneyList(airasiaMoneyList);
+		moneyVoList.add(moneyairasiaVo);
+	}
+});	
 			thread2.start();
 			thread3.start();
-			thread1.join();   
+			thread4.start();
+		//	thread1.join();   
 			thread2.join();  
 			thread3.join(); 
+			thread4.join(); 
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -193,7 +227,7 @@ public class AirportMoneyController extends Thread{
 		}
 		Gson gson = new Gson(); 
 		String json = gson.toJson(moneyVoList);
-		System.out.printf( json );
+		
 		return moneyVoList;
 	}
 }

@@ -23,6 +23,8 @@ function search(outboundDate, returnDate, from, to, structure, name1, name2) {
 	structureD=structure;
 	outboundD = outboundDate;
 	returnD =  returnDate;
+
+	
 	$('#money').show();
 	$('#name').html(name1 + "->" + name2);
 	if (structureD == "RoundTrip") {
@@ -181,7 +183,7 @@ function createCal(from, to){
 								'yy/mm/dd', date.toDate());
 				
 						if (stat == "0") {
-							if (szformatDate == returnDate) {
+							if (szformatDate == returnD) {
 								cell.css("background-color", "#FFAA33");
 							}
 						}
@@ -478,17 +480,20 @@ function browserChart(){
 	var today = dtToday.getFullYear()+"/"+(dtToday.getMonth()+1+"/01");
 	$('#money').hide();
 	$('#chart').show();
-	chart("0");
-	$('#next').hide();
-	
-	
+
 	
 	if(new Date(today).getTime() >=  new Date($.datepicker.formatDate('yy/mm',new Date(outboundD))+"/01").getTime()){
 		$('#beforeMonth').hide();
 	}else{
 		$('#beforeMonth').show();
 	}
-	
+
+	if (jQuery.isEmptyObject(chartData1)) {
+		nextChart();
+		$('#before').hide();
+	}else{
+		beforeChart();
+	}
 	if(structureD == "RoundTrip"){
 		if(new Date(today).getTime() >=  new Date($.datepicker.formatDate('yy/mm',new Date(returnD))+"/01").getTime()){
 			$('#before1Month').hide();
@@ -502,10 +507,15 @@ function browserChart(){
 			$('#before1Month').show();
 			$('#nextMonth').show();
 		}
+
+		if (jQuery.isEmptyObject(chartData2)) {
+			nextReturnChart();
+			$('#before1').hide();
+		}else {
+			beforeReturnChart();
+		}
 		
-		returnChart("0");
-		$('#next1').show();
-		$('#before1').hide();
+
 	} else {
 		$('#next1').hide();
 		$('#before1').hide();

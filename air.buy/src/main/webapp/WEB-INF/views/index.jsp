@@ -173,9 +173,7 @@
 </script>
 </head>
 <body>
-	<div class="modal">
-		<!-- Place at bottom of page -->
-	</div>
+
 	<!-- Navigation -->
 	<nav class="navbar navbar-default navbar-fixed-top topnav"
 		role="navigation">
@@ -435,7 +433,9 @@
 
 
 
-
+	<div class="modal">
+		<!-- Place at bottom of page -->
+	</div>
 
 </body>
 </html>

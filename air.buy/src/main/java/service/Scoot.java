@@ -36,13 +36,13 @@ public class Scoot {
 	private static String url = "http://makeabooking.flyscoot.com/Book";
 
 	public static void main(String[] args) throws Exception {
-		String outboundDate = "2017-01";
-		String returnDate = "2017-03";
+		String outboundDate = "2016-12";
+		String returnDate = "2017-01";
 		String from = "TPE";
 		String to = "NRT";
 
-		//String structure = "Return";
-		 String structure = "Oneway";
+		String structure = "Return";
+		// String structure = "Oneway";
 		Scoot t = new Scoot();
 		List<HashMap<String, String>> moneyList = t.getMoney(outboundDate,
 				returnDate, from, to, structure);
@@ -102,16 +102,16 @@ public class Scoot {
 							if(!"No flights".equals(e.select("p[class=price]").text())){
 								outboundMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	e.select("p[class=price]").text().replace(",", ""));
 							}
-								System.out.println(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
+								System.out.println("Scoot 去程："+DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
 							origin = dataOrigin;
 						} else {
-							if(!DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))).contains(outboundDate)){
+							if(!DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))).contains(returnDate)){
 								continue;
 							}
 							if(!"No flights".equals(e.select("p[class=price]").text())){
 								returnMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	e.select("p[class=price]").text().replace(",", ""));
 							}
-							System.out.println("回程："+ DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
+							System.out.println("Scoot 回程："+ DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
 						}
 					}
 

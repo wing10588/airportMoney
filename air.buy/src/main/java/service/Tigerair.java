@@ -38,6 +38,68 @@ public class Tigerair {
 		Tigerair t = new Tigerair();
 		List<HashMap<String, String>> moneyList = t.getMoney(outboundDate,
 				returnDate, from, to, structure);
+		
+		File saveFile = new File("D:\\Data.txt");
+		FileWriter fwriter = new FileWriter(saveFile);
+		
+	/*	Document doc = Jsoup
+				.connect("https://booking.tigerair.com:445/SelectFlights.aspx?culture=zh-TW&gaculture=TWZH")
+				.ignoreContentType(true)
+				.followRedirects(true)
+				.userAgent(
+						"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+				.referrer(
+						"view-source:https://booking.tigerair.com/SelectFlights.aspx?culture=zh-TW&gaculture=TWZH")
+			
+					.data("ControlGroupSearchView$AvailabilitySearchInputSearchView$RadioButtonMarketStructure",
+						structure)
+						.data(
+						"ControlGroupSearchView_AvailabilitySearchInputSearchVieworiginStation1",
+						from)
+						.data(
+						"ControlGroupSearchView_AvailabilitySearchInputSearchViewdestinationStation1",
+						to)
+						.data("ControlGroupSearchView$AvailabilitySearchInputSearchView$TextBoxMarketOrigin1",from)
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$TextBoxMarketDestination1",
+						to)
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListPassengerType_ADT",
+						"1")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListPassengerType_CHD",
+						"0")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListPassengerType_INFANT",
+						"0")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketDateRange1",
+						"1|1")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketDay1",
+						"01")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketMonth1",
+						outboundDate)
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketDay2",
+						"01")
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketMonth2",
+						returnDate)
+						.data(
+						"ControlGroupSearchView$AvailabilitySearchInputSearchView$DropDownListMarketDateRange2",
+						"1|1")
+						.data("ControlGroupSearchView$ButtonSubmit",
+						"\u7372\u53D6\u822A\u73ED")
+						.data("hiddendAdultSelection", "1")
+						.data("hiddendChildSelection", "0")
+						.data(
+						"__VIEWSTATE",
+						"/wEPDwUBMGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFU0NvbnRyb2xHcm91cEhlYWRlclNlbGVjdEJ1bmRsZVZpZXckTG9naW5IZWFkZXJWaWV3U2VsZWN0QnVuZGxlVmlldyRjaGtCb3hSZW1lbWJlck1leFenyyjSor9G1yG/r5oBpIOJo+o=")
+				.timeout(10000).post();
+		fwriter.write(doc.toString());
+		fwriter.close();*/
 	}
 
 	/* Error */
