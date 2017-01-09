@@ -34,15 +34,15 @@ h6 {
     padding-top: 50px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
     padding-bottom: 50px;
     text-align: center;
-    color: #f8f8f8;
-    background: url(../img/intro-bg.jpg) no-repeat center center;
+    color: #ffffff;
+   background: url(../img/20036554066223316.jpg) no-repeat center center; 
     background-size: cover;
 }
 
 .intro-message {
     position: relative;
-    padding-top: 20%;
-    padding-bottom: 20%;
+    padding-top: 10%;
+    padding-bottom: 0%;
 }
 
 .intro-message > h1 {
@@ -53,7 +53,7 @@ h6 {
 
 .intro-divider {
     width: 400px;
-    border-top: 1px solid #f8f8f8;
+    border-top: 1px solid #ffffff;
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
@@ -94,7 +94,8 @@ h6 {
 
 .content-section-a {
     padding: 50px 0;
-    background-color: #f8f8f8;
+     background: rgba(0%,10%,20%,0.05);
+  
 }
 
 .content-section-b {
@@ -115,8 +116,8 @@ h6 {
 
 .banner {
     padding: 100px 0;
-    color: #f8f8f8;
-    background: url(../img/banner-bg.jpg) no-repeat center center;
+    color: #ffffff;
+    background: url(../img/banner-bg.jpg) no-repeat center center;*/
     background-size: cover;
 }
 
@@ -161,8 +162,8 @@ h6 {
 }
 
 footer {
-    padding: 50px 0;
-    background-color: #f8f8f8;
+    padding: 0px 0;
+    background-color: #ffffff;
 }
 
 p.copyright {

@@ -11,6 +11,7 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,7 @@ import util.DateUtil;
 
 public class Jetstar {
 	private static String url = "https://booknow.jetstar.com/LowFareFinder.aspx?culture=zh-HK";
-
+	Logger logger=Logger.getLogger(Jetstar.class);
 	public static void main(String[] args) throws Exception {
 		String outboundDate = "2016-12";
 		String returnDate = "2017-01";
@@ -37,7 +38,7 @@ public class Jetstar {
 	public List<HashMap<String, String>> getMoney(String outboundDate,
 			String returnDate, String from, String to, String structure)
 			throws java.io.IOException, ParseException {
-		System.out.println("jetstar select start !");
+		logger.info("jetstar select start !");
 		HashMap<String, String> outboundMap = new HashMap<String, String>();
 		HashMap<String, String> returnMap = new HashMap<String, String>();
 		List<HashMap<String, String>> moneyList = new ArrayList<HashMap<String, String>>();
@@ -95,7 +96,7 @@ public class Jetstar {
 									continue;
 								}
 							outboundMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	cueenrcy +" "+ e.attr("data-price").replace(".00", ""));
-							System.out.println((new StringBuilder(
+							logger.info((new StringBuilder(
 									"Jetstar 去程："))
 									
 									.append(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))).append(":")
@@ -110,7 +111,7 @@ public class Jetstar {
 								continue;
 							}
 							returnMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),cueenrcy +" "+e.attr("data-price").replace(".00", ""));
-							System.out.println((new StringBuilder(
+							logger.info((new StringBuilder(
 									"Jetstar 回程："))
 						
 									.append(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))).append(":")
@@ -122,11 +123,11 @@ public class Jetstar {
 				}
 
 			} catch (HttpException httpexc) {
-				System.err.println("Fatal protocol violation: "
+				logger.error("Fatal protocol violation: "
 						+ httpexc.getMessage());
 				httpexc.printStackTrace();
 			} catch (IOException ioexc) {
-				System.err.println("Fatal transport error: "
+				logger.error("Fatal transport error: "
 						+ ioexc.getMessage());
 				ioexc.printStackTrace();
 			} finally {
@@ -138,7 +139,7 @@ public class Jetstar {
 		}
 		moneyList.add(outboundMap);
 		moneyList.add(returnMap);
-		System.out.println("jetstar select end !");
+		logger.info("jetstar select end !");
 		return moneyList;
 
 	}

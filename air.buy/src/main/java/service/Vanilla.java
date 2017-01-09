@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import util.DateUtil;
 
 public class Vanilla {
 	private static String url = "https://www.vanilla-air.com/en/booking/#/flight-select/?";
-
+	static Logger logger=Logger.getLogger(Vanilla.class);
 	public static void main(String[] args) throws Exception {
 		String outboundDate = "2017-05-01";
 		String returnDate = "2017-06-01";
@@ -96,7 +97,7 @@ public class Vanilla {
 				System.out.println("test:" + day.getText() + ":" + price.getText());
 				
 			}
-			System.out.println("--------");
+			logger.info("--------");
 		}
     }
 	public List<HashMap<String, String>> getMoney(String outboundDate,
@@ -158,7 +159,7 @@ public class Vanilla {
 			int getStatusJsonCode = client1.executeMethod(get1);
 
 			if (getStatusJsonCode != 200) {
-				System.err.println((new StringBuilder("Method failed: "))
+				logger.error((new StringBuilder("Method failed: "))
 						.append(get1.getStatusLine()).toString());
 				
 			}
@@ -172,7 +173,8 @@ public class Vanilla {
 		json = new JSONObject(new String(get1.getResponseBody()));
 	
 		JSONArray array = json.getJSONArray("Result");
-		
+
+		if( array.getJSONObject(0).getString("Value") != "null"){
 		JSONObject fareListOfDay = array.getJSONObject(0).getJSONObject("FareListOfDay");
 		Iterator<?> keys = fareListOfDay.keys();
 		while(keys.hasNext() ) {
@@ -181,9 +183,9 @@ public class Vanilla {
 		    	continue;
 		    }
 		    map.put(fareListOfDay.getJSONObject(key.toString()).getString("FlightDate"),cur+" "+ fareListOfDay.getJSONObject(key.toString()).getString("LowestFare"));
-			System.out.println("香草 :"+fareListOfDay.getJSONObject(key.toString()).getString("FlightDate")+":"+cur+" "+ fareListOfDay.getJSONObject(key.toString()).getString("LowestFare"));
+		    logger.info("香草 :"+fareListOfDay.getJSONObject(key.toString()).getString("FlightDate")+":"+cur+" "+ fareListOfDay.getJSONObject(key.toString()).getString("LowestFare"));
 		}
-
+		}
 		return map;
 	}
 

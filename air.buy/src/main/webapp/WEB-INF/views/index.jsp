@@ -61,17 +61,22 @@
 }
 
 .panel-transparent .panel-heading {
-	background: rgba(122, 130, 136, 0.2) !important;
+	background: rgba(122, 130, 136, 0.7) !important;
 }
 
 .panel-transparent .panel-body {
-	background: rgba(46, 51, 56, 0.2) !important;
+	background: rgba(46, 51, 56, 0.7) !important;
 }
 </style>
 <script type="text/javascript">
 	$(function() {
 		$body = $("body");
 		$(document).on({
+			
+		
+			 
+			
+			
 			ajaxStart : function() {
 				$body.addClass("loading");
 			},
@@ -156,8 +161,10 @@
 			if (this.value != "RoundTrip") {
 				$("#returnDate").attr("disabled", "disabled");
 				$("#returnDate").val("");
+				$("#rerDiv").hide();
 			} else {
 				$("#returnDate").removeAttr("disabled");
+				$("#rerDiv").show();
 			}
 
 		});
@@ -166,14 +173,21 @@
 			$('#moneyFind').show();
 			$('#money').hide();
 			$('#chart').hide();
+			$("#selectTicket").hide();
+			$('#name1').html("");
 			stat = "0";
+			
+			
+			
 		});
 
 	});
 </script>
 </head>
 <body>
-
+	<div class="modal">
+		<!-- Place at bottom of page -->
+	</div>
 	<!-- Navigation -->
 	<nav class="navbar navbar-default navbar-fixed-top topnav"
 		role="navigation">
@@ -192,8 +206,9 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a id="back">查詢票價</a></li>
-
+					<li><a href="#" id="back">查詢票價</a></li>
+					<li><a href="#about">最新消息</a></li>
+					<li><a href="mailto:wing10588@gmail.com">連絡我</a></li>
 
 				</ul>
 			</div>
@@ -209,14 +224,15 @@
 		<div class="container">
 
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-9">
 					<div class="intro-message">
-						<h3>LCC機票比價</h3>
+						
 						<div class="panel-group">
 							<div class="panel panel-transparent">
-
+								
 								<div class="panel-body">
 									<div class="controls form-inline">
+										<h3>LCC機票比價</h3>
 										從 <select id="from" name="from" class="form-control" code="">
 											<jsp:include page="countryList.jsp" /></select>到 <select id="to"
 											name="to" class="form-control" code="">
@@ -230,8 +246,8 @@
 										回程日
 										<div class='input-group date'>
 											<input type='text' class="form-control" size="10"
-												id='returnDate' /> <span class="input-group-addon"> <span
-												class="glyphicon glyphicon-calendar"></span>
+												id='returnDate' /> <span class="input-group-addon">
+												<span class="glyphicon glyphicon-calendar"></span>
 											</span>
 										</div>
 									</div>
@@ -263,7 +279,36 @@
 
 
 				</div>
+				<div class="col-lg-3">
+					<div class="intro-message">
+						<div class="panel-group">
+							<div class="panel">
+								<h5 style="color:#000000">目前提供以下航空公司查詢服務：</h5>
+								<ul class="list-inline intro-social-buttons">
+									<li><img src="resources/img/Airasia.png" border="0" height="50"
+										width="150" /></li>
+									<li><img src="resources/img/Jetstar.png" border="0" height="50"
+										width="150" /></li>
+									<li><img src="resources/img/Peach.png" border="0" height="50"
+										width="150" /></li>
+									<li><img src="resources/img/Scoot.png" border="0" height="50"
+										width="150" /></li>
+									<li><img src="resources/img/Tigerair.png" border="0" height="50"
+										width="150" /></li>
+									<li><img src="resources/img/Vanilla.png" border="0" height="50"
+										width="150" /></li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+				<p class="copyright text-muted small center">Copyright &copy;
+					Your Company 2017. All Rights Reserved</p>
 			</div>
+			</div>
+			
 		</div>
 
 	</div>
@@ -279,7 +324,7 @@
 
 		<div class="container">
 			<div class="row">
-				<div style="text-align: right; margin-top: 2cm;">
+				<div style="text-align: right; margin-top: 0.2cm;">
 					<ul class="list-inline intro-social-buttons">
 						<li><a onClick="browserCal()" class="btn btn-default btn-lg"><span
 								class="network-name"><b>日歷模式</b></span></a></li>
@@ -287,56 +332,64 @@
 
 					</ul>
 				</div>
+				<div class="panel">
+					<div class="panel-body">
+						<div style="text-align: center">
+							<ul class="list-inline intro-social-buttons">
+								<li><div id="beforeMonth">
+										<a onClick="beforeMonth(0)" class="btn btn-default btn-lg"><span
+											class="network-name"><b>上個月</b></span></a>
+									</div></li>
 
-				<div style="text-align: center">
-					<ul class="list-inline intro-social-buttons">
-						<li><div id="beforeMonth">
-								<a onClick="beforeMonth(0)" class="btn btn-default btn-lg"><span
-									class="network-name"><b>上個月</b></span></a>
-							</div></li>
+								<li><div id="before">
+										<a onClick="beforeChart()" class="btn btn-default btn-lg"><span
+											class="network-name"><b>上一頁(前15日)</b></span></a>
+									</div></li>
+								<li><div id="next">
+										<a onClick="nextChart()" class="btn btn-default btn-lg"><span
+											class="network-name"><b>下一頁(後15日)</b></span></a>
+									</div></li>
+								<li><div id="nextMonth">
+										<a onClick="nextMonth(0)" class="btn btn-default btn-lg"><span
+											class="network-name"><b>下個月</b></span></a>
+									</div></li>
+							</ul>
+						</div>
 
-						<li><div id="before">
-								<a onClick="beforeChart()" class="btn btn-default btn-lg"><span
-									class="network-name"><b>上一頁(前15日)</b></span></a>
-							</div></li>
-						<li><div id="next">
-								<a onClick="nextChart()" class="btn btn-default btn-lg"><span
-									class="network-name"><b>下一頁(後15日)</b></span></a>
-							</div></li>
-						<li><div id="nextMonth">
-								<a onClick="nextMonth(0)" class="btn btn-default btn-lg"><span
-									class="network-name"><b>下個月</b></span></a>
-							</div></li>
-					</ul>
+
+
+						<div id="container"
+							style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+					</div>
 				</div>
-				<div id="container"
-					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-				<hr class="intro-divider">
-				<div style="text-align: center">
-					<ul class="list-inline intro-social-buttons">
-						<li><div id="before1Month">
-								<a onClick="beforeMonth(1)" class="btn btn-default btn-lg"><span
-									class="network-name"><b>上個月</b></span></a>
-							</div></li>
-						<li><div id="before1">
-								<a onClick="beforeReturnChart()" class="btn btn-default btn-lg"><span
-									class="network-name"><b>上一頁(前15日)</b></span></a>
-							</div></li>
-						<li><div id="next1">
-								<a onClick="nextReturnChart()" class="btn btn-default btn-lg"><span
-									class="network-name"><b>下一頁(後15日)</b></span></a>
-							</div></li>
-							<li><div id="next1Month">
-								<a onClick="nextMonth(1)" class="btn btn-default btn-lg"><span
-									class="network-name"><b>下個月</b></span></a>
-							</div></li>
+				<div class="panel">
+					<div class="panel-body">
+						<div style="text-align: center">
+							<ul class="list-inline intro-social-buttons">
+								<li><div id="before1Month">
+										<a onClick="beforeMonth(1)" class="btn btn-default btn-lg"><span
+											class="network-name"><b>上個月</b></span></a>
+									</div></li>
+								<li><div id="before1">
+										<a onClick="beforeReturnChart()"
+											class="btn btn-default btn-lg"><span class="network-name"><b>上一頁(前15日)</b></span></a>
+									</div></li>
+								<li><div id="next1">
+										<a onClick="nextReturnChart()" class="btn btn-default btn-lg"><span
+											class="network-name"><b>下一頁(後15日)</b></span></a>
+									</div></li>
+								<li><div id="next1Month">
+										<a onClick="nextMonth(1)" class="btn btn-default btn-lg"><span
+											class="network-name"><b>下個月</b></span></a>
+									</div></li>
 
-					</ul>
+							</ul>
+						</div>
+						<div id="container1"
+							style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+					</div>
 				</div>
-				<div id="container1"
-					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</div>
-
 		</div>
 		<!-- /.container -->
 
@@ -349,7 +402,7 @@
 
 		<div class="container">
 			<div class="row">
-				<div style="text-align: right; margin-top: 2cm;">
+				<div style="text-align: right; margin-top: 0.2cm;">
 					<ul class="list-inline intro-social-buttons">
 						<li><a onClick="browserChart()"
 							class="btn btn-default btn-lg"><span class="network-name"><b>柱狀圖模式</b></span></a></li>
@@ -358,15 +411,27 @@
 					</ul>
 				</div>
 
-				<h3>
-					<div id='name'></div>
-				</h3>
-				<div id='calendar'></div>
-				<hr class="intro-divider">
-				<h3>
-					<div id='name1'></div>
-				</h3>
-				<div id='calendar1'></div>
+				<div class="panel">
+					<div class="panel-body">
+						<h3>
+							<div id='name'></div>
+						</h3>
+
+						<div id='calendar'></div>
+					</div>
+				</div>
+
+
+				<div class="panel">
+					<div class="panel-body">
+						<h3>
+
+							<div id='name1'></div>
+						</h3>
+
+						<div id='calendar1'></div>
+					</div>
+				</div>
 			</div>
 
 		</div>
@@ -374,33 +439,29 @@
 
 	</div>
 
-	<div class="content-section-a navbar-fixed-bottom" id="selectTicket" hidden>
+	<div class="col-xs-12 navbar-fixed-bottom"
+		style='background-color: #ffffff;' id="selectTicket" hidden>
 
 		<div class="container">
 			<div class="row">
-				<div class="panel-group">
-					<div class="panel-body">
-						<div class="controls form-inline">
 
-							出發地
-					
-								<input type='text' class="form-control"  id='' />
-					
-							目的地
-						
-								<input type='text' class="form-control"  id='' />
-						
-							<ul class="list-inline intro-social-buttons">
-							<li><a class="btn btn-default btn-lg" id=""><span
-									class="network-name"><b>開啟訂票網站</b></span></a></li>
+				<div class="controls form-inline">
+					<label id="fromAndTo"></label>
+					<div id="airImg" style="display: inline"></div>
+					出發日期 <input type='text' class="form-control" id='airDept' readOnly />
+					<div style="display: inline" id="rerDiv">
+						回程日期
 
-
-						</ul>
-						</div>
-
-
+						<div id="air1Img" style="display: inline"></div>
+						<input type='text' class="form-control" id='airRet' readOnly />
 					</div>
+					<button class="btn btn-default" id="airBtn" onClick="airUrl()">
+						<b>開啟訂票網站</b>
+					</button>
+					<input type="hidden" id="airNameHidden" /> <input type="hidden"
+						id="airName1Hidden" />
 				</div>
+
 
 			</div>
 		</div>
@@ -410,32 +471,11 @@
 
 	<!-- /.banner -->
 
-	<!-- Footer -->
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<ul class="list-inline">
-						<li><a href="#">Home</a></li>
-						<li class="footer-menu-divider">&sdot;</li>
-						<li><a href="#about">About</a></li>
-						<li class="footer-menu-divider">&sdot;</li>
-						<li><a href="#services">Services</a></li>
-						<li class="footer-menu-divider">&sdot;</li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-					<p class="copyright text-muted small">Copyright &copy; Your
-						Company 2014. All Rights Reserved</p>
-				</div>
-			</div>
-		</div>
-	</footer>
 
 
 
-	<div class="modal">
-		<!-- Place at bottom of page -->
-	</div>
+
+
 
 </body>
 </html>

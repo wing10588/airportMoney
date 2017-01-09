@@ -17,6 +17,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,10 +35,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 public class Scoot {
 	private static String url = "http://makeabooking.flyscoot.com/Book";
-
+	Logger logger=Logger.getLogger(Scoot.class);
 	public static void main(String[] args) throws Exception {
-		String outboundDate = "2016-12";
-		String returnDate = "2017-01";
+		String outboundDate = "2017-01";
+		String returnDate = "2017-02";
 		String from = "TPE";
 		String to = "NRT";
 
@@ -52,12 +53,13 @@ public class Scoot {
 	public List<HashMap<String, String>> getMoney(String outboundDate,
 			String returnDate, String from, String to, String structure)
 			throws java.io.IOException, ParseException {
-		System.out.println("scoot select start !");
+		logger.info("scoot select start !");
 		File saveFile = new File("D:\\Data.txt");
 		FileWriter fwriter = new FileWriter(saveFile);
 		HashMap<String, String> outboundMap = new HashMap<String, String>();
 		HashMap<String, String> returnMap = new HashMap<String, String>();
 		List<HashMap<String, String>> moneyList = new ArrayList<HashMap<String, String>>();
+		
 		try {
 			for (int i = 16; i <= 17; i++) {
 				Document doc = Jsoup
@@ -102,7 +104,7 @@ public class Scoot {
 							if(!"No flights".equals(e.select("p[class=price]").text())){
 								outboundMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	e.select("p[class=price]").text().replace(",", ""));
 							}
-								System.out.println("Scoot 去程："+DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
+							logger.info("Scoot 去程："+DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
 							origin = dataOrigin;
 						} else {
 							if(!DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))).contains(returnDate)){
@@ -111,18 +113,18 @@ public class Scoot {
 							if(!"No flights".equals(e.select("p[class=price]").text())){
 								returnMap.put(DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date"))),	e.select("p[class=price]").text().replace(",", ""));
 							}
-							System.out.println("Scoot 回程："+ DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
+							logger.info("Scoot 回程："+ DateUtil.dateToString(DateUtil.StringToDate(e.attr("data-date")))+ ":"+ e.select("p[class=price]").text().replace(",", ""));
 						}
 					}
 
 				}
 			}
 		} catch (HttpException httpexc) {
-			System.err.println("Fatal protocol violation: "
+			logger.error("Fatal protocol violation: "
 					+ httpexc.getMessage());
 			httpexc.printStackTrace();
 		} catch (IOException ioexc) {
-			System.err.println("Fatal transport error: " + ioexc.getMessage());
+			logger.error("Fatal transport error: " + ioexc.getMessage());
 			ioexc.printStackTrace();
 		} finally {
 
@@ -130,7 +132,7 @@ public class Scoot {
 		moneyList.add(outboundMap);
 		moneyList.add(returnMap);
 		fwriter.close();
-		System.out.println("scoot select end !");
+		logger.info("scoot select end !");
 		return moneyList;
 
 	}

@@ -16,15 +16,14 @@ var currency ="";
 var outboundD ="";
 var returnD="";
 function search(outboundDate, returnDate, from, to, structure, name1, name2) {
-	alert(outboundDate + "," + returnDate + "," + from + "," + to + ","
-			+ structure + "," + name1 + "," + name2);
+	
 	namefrom=name1;
 	nameto=name2;
 	structureD=structure;
 	outboundD = outboundDate;
 	returnD =  returnDate;
 
-	
+	$("#fromAndTo").text(name1 + "->" + name2);
 	$('#money').show();
 	$('#name').html(name1 + "->" + name2);
 	if (structureD == "RoundTrip") {
@@ -113,7 +112,17 @@ function createCal(from, to){
 					}
 				*/
 
-				}
+				}, eventClick: function(calEvent, jsEvent, view) {
+
+			      
+
+			        // change the border color just for fun
+			      //  $(this).css('border-color', 'red');
+			        $("#airImg").html('<img src="resources/img/'+calEvent.title.split(" ")[0]+'.png" border="0" height="50" width="150" />');
+			        $("#airDept").val($.datepicker.formatDate('yy/mm/dd',new Date(calEvent.start)));
+			        $("#airNameHidden").val(calEvent.title.split(" ")[0]);
+
+			    }
 			});
 	
 	if (structureD == "RoundTrip") {
@@ -188,6 +197,17 @@ function createCal(from, to){
 							}
 						}
 					} // events
+					, eventClick: function(calEvent, jsEvent, view) {
+
+					      
+
+				        // change the border color just for fun
+				      //  $(this).css('border-color', 'red');
+				        $("#air1Img").html('<img src="resources/img/'+calEvent.title.split(" ")[0]+'.png" border="0" height="50" width="150" />');
+				        $("#airRet").val($.datepicker.formatDate('yy/mm/dd',new Date(calEvent.start)));
+				        $("#airName1Hidden").val(calEvent.title.split(" ")[0]);
+				      
+				    }
 				});
 
 	}
@@ -314,6 +334,9 @@ function ajax(outboundDate, returnDate, from, to, structure, name1, name2,view) 
 				browserChart();
 			}
 			$('#moneyFind').hide();
+			$("#selectTicket").show();
+			$("fromAndTo").text(name1+"->"+name2);
+			
 			window.location.href = '#services';
 			stat = "1";
 			return true;
@@ -663,5 +686,107 @@ function nextMonth(status){
 		
 	}
 	
+
 	
+}
+
+
+function airUrl(){
+	if($("#airNameHidden").val() == ""){
+		alert("請選擇出發日期");
+		return false;
+	}
+	if(structureD == "RoundTrip"){
+		if($("#airName1Hidden").val() == ""){
+			alert("請選擇回程日期");
+			return false;
+		}
+		
+		
+	}
+	
+	alert("最後價格以官網價格為主");
+	
+	var airName = [];
+	airName.push($("#airNameHidden").val());
+
+	if ($("#airNameHidden").val() != $("#airName1Hidden").val()) {
+		airName.push($("#airName1Hidden").val());
+	}
+
+	var data = {
+			"outboundDate" : $("#airDept").val(),
+			"returnDate" : $("#airRet").val(),
+			"from" :  namefrom.substring(namefrom.length - 4,namefrom.length-1),
+			"to" : nameto.substring(nameto.length - 4,nameto.length-1),
+			"structure" : structureD,
+			"airName" : airName
+		};
+	var peach = {
+	   "flight_search_parameter[0][departure_date]":$("#airDept").val(),
+	"flight_search_parameter[0][departure_airport_code]":namefrom.substring(namefrom.length - 4,namefrom.length-1),
+	"flight_search_parameter[0][arrival_airport_code]": nameto.substring(nameto.length - 4,nameto.length-1),
+	"flight_search_parameter[0][is_return]":"true",
+	"flight_search_parameter[0][return_date]":$("#airRet").val(),
+	"adult_count":"1",
+	"child_count":"0",
+	"infant_count":"0"
+	};
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "getUrl",
+		data : data,
+		dataType : 'json',
+	
+		success : function(data) {
+			$.each(data, function(k, v) {
+				var html = "";
+				if(v.indexOf("air.buy") >= 0){
+					html = v.split("air.buy")[1];
+					/*var OpenWindow = window.open(v.split("air.buy")[0],'_blank');
+					var text = document.createTextNode('hi');
+					OpenWindow.document.body.appendChild(html);*/
+					
+					/*var w = window.open("sample.html",'_blank');
+					  var html = v.split("air.buy")[0];
+					  localStorage.setItem('AdminId', idvalue);
+					  localStorage.setItem('AdminId', idvalue);
+					  localStorage.setItem('AdminId', idvalue);
+					  localStorage.setItem('AdminId', idvalue);
+					    $(w.document.body).html(html);*/
+					var w = window.open( v.split("air.buy")[0], '_blank');
+					w.document.localStorage.setItem('access_uuid', "19b4deb2-c5c7-47a7-a200-8c20214cb90b");
+					w.document.localStorage.setItem('app_session_uuid', "11d69982-88c2-4165-a28e-a0470467646c");
+					w.document.localStorage.setItem('client_reqid', "32cbef3d-4e07-417f-bbb8-ca5bfecc1479");
+					w.document.localStorage.setItem('_session_id', "285af8eb1560640602f3efa7e86e3d74");
+					w.document.body.innerHTML =  v.split("air.buy")[1];
+				} else {
+					window.open(v, '_blank');
+				}
+			
+				
+			});
+			
+			/*$.post("https://booking.flypeach.com/tw",peach,function(result){
+				window.open(result, '_blank');
+			  });*/
+		},
+		error : function(e) {
+
+			console.log("ERROR: ", e);
+			alert("開啟失敗");
+			
+			
+			return false;
+		},
+		done : function(e) {
+			console.log("DONE");
+
+		}
+	});
+	
+	
+//	https://booking.airasia.com/Flight/Select?c=true&s=false&r=true&o1=TPE&d1=SYD&dd1=2017-01-10&dd2=2017-02-10
 }

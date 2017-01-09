@@ -25,6 +25,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,10 +56,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 public class Peach {
 	private static String url = "http://www.flypeach.com/pc/tw";
-
+	Logger logger=Logger.getLogger(Peach.class);
 	public static void main(String[] args) throws Exception {
-		String outboundDate = "2017-01-01";
-		String returnDate = "2017-03-01";
+		String outboundDate = "2017/01/01";
+		String returnDate = "2017/03/01";
 		String from = "TPE";
 		String to = "OKA";
 
@@ -67,13 +68,14 @@ public class Peach {
 		Peach t = new Peach();
 		List<HashMap<String, String>> moneyList = t.getMoney(outboundDate,
 				returnDate, from, to, structure);
+
 	}
 
 	public List<HashMap<String, String>> getMoney(String outboundDate,
 			String returnDate, String from, String to, String structure)
 			throws java.io.IOException, ParseException, JSONException,
 			InterruptedException {
-		System.out.println("peach select start !");
+		logger.info("peach select start !");
 		File saveFile = new File("D:\\Data.txt");
 		FileWriter fwriter = new FileWriter(saveFile);
 		HashMap<String, String> outboundMap = new HashMap<String, String>();
@@ -155,16 +157,18 @@ public class Peach {
 		form.appendChild(submitButton);
 
 		HtmlPage page2 = submitButton.click();
-
+	
 		List<?> cal = page2.getByXPath("//a[@href='#select_date']");
 
 		// HtmlAnchor anchor = (HtmlAnchor)
 		// cal.getFirstByXPath("//a[@href='#select_date']");
+	//	Runtime.getRuntime().exec("cmd /c start " + page2.getBaseURI());
 		if (cal.size() > 0) {
 			HtmlPage page3 = ((HtmlAnchor) cal.get(0)).click();
 
 			Thread.sleep(3000);
 			// System.out.println(page3.asXml());
+			
 			outboundMap = fromHtml(outboundDate.split("-")[0], page3.asXml());
 
 			if ("RoundTrip".equals(structure)) {
@@ -180,7 +184,7 @@ public class Peach {
 		moneyList.add(outboundMap);
 		moneyList.add(returnMap);
 		fwriter.close();
-		System.out.println("peach select end !");
+		logger.info("peach select end !");
 		return moneyList;
 
 	}
@@ -202,7 +206,7 @@ public class Peach {
 							.replace(",", "").split(" ");
 					String day = year + "-" + addZero(str[0].split("/")[0])
 							+ "-" + addZero(str[0].split("/")[1]);
-					System.out.println(day + " " + str[1] +" "+ str[2]);
+					logger.info(day + " " + str[1] +" "+ str[2]);
 					map.put(day, str[1]+" "+ str[2]  );
 
 				}
